@@ -66,7 +66,8 @@
         "variant": "cpp",
         "__functional_base": "cpp",
         "functional": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "list": "cpp"
     },
     "cSpell.words": [
         "myclass"

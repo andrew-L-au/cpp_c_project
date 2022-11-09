@@ -10,8 +10,8 @@ public:
     string sellerName;
     int addTime;
     bool hasPromotion;
-    Promotion* promotion;
-    Commodity(string sellerName, string merchandiseName, int addTime, bool hasPromotion, Promotion* promotion){
+    Promotion promotion;
+    Commodity(string sellerName, string merchandiseName, int addTime, bool hasPromotion, Promotion promotion){
         this->addTime = addTime;
         this->merchandiseName = merchandiseName;
         this->sellerName = sellerName;

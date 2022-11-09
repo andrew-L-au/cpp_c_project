@@ -15,5 +15,20 @@ public:
         this->requirement = requirement;
         this->rate = rate;
     }
+    Promotion(){}
+    bool operator==(const Promotion& promotion) const{
+        return (this->type == promotion.type) &&
+        (this->requirement == promotion.requirement) &&
+        (this->rate == promotion.rate);
+    }
+};
+
+template <>
+struct hash<Promotion>{
+size_t operator()(const Promotion& p) const{
+    return ((hash<string>()(p.type)
+        ^ (hash<int>()(p.requirement) << 1)) >> 1)
+        ^ (hash<int>()(p.rate) << 1);
+}
 };
 #endif

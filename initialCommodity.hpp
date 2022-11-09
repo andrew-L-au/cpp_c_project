@@ -5,7 +5,7 @@
 #include"Commodity.hpp"
 #include"Promotion.hpp"
 using namespace std;
-bool initialCommodity(Commodity* newCommodity,int addTime){
+bool initialAddCommodity(Commodity* newCommodity,int addTime){
     cout << "enter commodity and its seller(split by space,put store's name first):" << endl;
     string storeName;
     string wareName;
@@ -27,7 +27,7 @@ bool initialCommodity(Commodity* newCommodity,int addTime){
         cin >> requirement >> rate;
         promotion = new Promotion(type, requirement, rate);
     }
-    *newCommodity = Commodity(storeName, wareName, addTime, hasPromotion, promotion);
+    *newCommodity = Commodity(storeName, wareName, addTime, hasPromotion, *promotion);
     return true;
 }
 #endif
