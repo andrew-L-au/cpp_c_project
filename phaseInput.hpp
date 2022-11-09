@@ -2,11 +2,13 @@
 #define PHASE_INPUT
 #include<string>
 using namespace std;
-string* phaseInput(string input){
+bool phaseInput(string input, string* ret){
     if (input.find(' ') == string::npos){
-        return nullptr;
+        return false;
     }
-    string* ret = new string[2];
+    if (input.find(' ') != input.find_last_of(' ')){
+        return false;
+    }
     int position = input.find(' ');
     ret[0] = input.substr(0, position);
     ret[1] = input.substr(position + 1, input.size() - position - 1);
