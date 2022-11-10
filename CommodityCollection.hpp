@@ -27,6 +27,7 @@ public:
 class CommodityCollection{
 private:
     list<Commodity> commodityList;
+    list<Promotion> promotionList;
     unordered_map<Promotion,int,hash<Promotion>> promotionCounter;
     StoreCondition storeCondition;
 public:
@@ -43,12 +44,29 @@ public:
                 promotionCounter.at(commodity.promotion) += 1;
             }else {
                 promotionCounter.emplace(commodity.promotion,1);
+                promotionList.push_back(commodity.promotion);
                 ret.hasOneNewPromotion = true;
             }
         }
         commodityList.push_front(commodity);
         changeStoreCondition(ADD);
         return ret;
+    }
+    ChangeCondition deleteCommodity(Commodity commodity){
+        ChangeCondition ret(false,false);
+        int pre = commodityList.size();
+        commodityList.remove(commodity);
+        if (pre == commodityList.size()){
+            return ret;
+        } 
+        if (commodity.hasPromotion){
+            promotionCounter.at(commodity.promotion) -= 1;            
+        }
+        changeStoreCondition(DELETE);
+        return ret;
+    }
+    bool hasPromotion(){
+        return promotionList.size() != 0;
     }
     bool containPromotion(Promotion promotion){
         return promotionCounter.contains(promotion);

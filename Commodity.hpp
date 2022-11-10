@@ -19,5 +19,12 @@ public:
         this->promotion = promotion;
     }
     Commodity(){}
+    bool operator==(const Commodity& commodity) const{
+        return (this->merchandiseName == commodity.merchandiseName) &&
+        (this->sellerName == commodity.sellerName) &&
+        (this->addTime == commodity.addTime) &&
+        (this->hasPromotion == commodity.hasPromotion) &&
+        (this->promotion == commodity.promotion);
+    }
 };
 #endif

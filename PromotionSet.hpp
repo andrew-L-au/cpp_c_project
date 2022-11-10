@@ -18,7 +18,9 @@ public:
         } 
     }
     bool updateStore(CommodityCollection store){
-        
+        if (store.hasPromotion()){
+
+        }
     }
 
     bool addStore(CommodityCollection store){
