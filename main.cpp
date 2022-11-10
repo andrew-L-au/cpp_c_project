@@ -1,23 +1,31 @@
 #include<iostream>
 #include<string>
 #include<list>
-#include"Store.hpp"
+#include"CommodityCollection.hpp"
 #include"Commodity.hpp"
 #include"initialCommodity.hpp"
 using namespace std;
-list<Store> storeList;
+list<CommodityCollection> storeList;
+
+bool inputIsFirst(string output,string first){
+    string input;
+    cout << output << endl;
+    cin >> input;
+    return input == first ? true : false;
+}
+
 int main(){
     for (int time = 0; ;++time){
-        string addOrDelete;
-        bool isAdd;
-        cout << "Add(A) Or Delete(D) Commodity?:" << endl;
-        cin >> addOrDelete;
-        isAdd = addOrDelete == "A" ? true : false;
+        bool isShowCart = inputIsFirst("Show the shopping cart? Y or N:","Y"); 
+        if (isShowCart){
+            continue;
+        }
+        bool isAdd = inputIsFirst("Add(A) Or Delete(D) Commodity?:","A");
         if (isAdd){
             Commodity commodity;
             initialAddCommodity(&commodity, time);
             bool isNewStore = true;
-            Store oldStore;
+            CommodityCollection oldStore;
             for (auto i : storeList){
                 if (i.storeName == commodity.sellerName){
                     isNewStore = false;
@@ -25,16 +33,17 @@ int main(){
                 }
             }
             if (isNewStore){
-                Store newStore(commodity.sellerName);
+                CommodityCollection newStore(commodity.sellerName);
                 newStore.addCommodity(commodity);
                 storeList.push_front(newStore);
             }else {
                 storeList.remove(oldStore);
+                oldStore.addCommodity(commodity);
+                storeList.push_front(oldStore);
             }
         }else{
 
-        }
-        
+        }       
     }
     return 1;
 }
