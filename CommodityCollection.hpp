@@ -26,11 +26,11 @@ public:
 
 class CommodityCollection{
 private:
-    list<Commodity> commodityList;
-    list<Promotion> promotionList;
     unordered_map<Promotion,int,hash<Promotion>> promotionCounter;
     StoreCondition storeCondition;
 public:
+    list<Commodity> commodityList;
+    list<Promotion> promotionList;
     string storeName;
     CommodityCollection(string storeName){
         this->storeName = storeName;
@@ -40,11 +40,11 @@ public:
     ChangeCondition addCommodity(Commodity commodity){
         ChangeCondition ret(false,false); 
         if (commodity.hasPromotion){
-            if (promotionCounter.contains(commodity.promotion)){
-                promotionCounter.at(commodity.promotion) += 1;
+            if (promotionCounter.contains(*commodity.promotion)){
+                promotionCounter.at(*commodity.promotion) += 1;
             }else {
-                promotionCounter.emplace(commodity.promotion,1);
-                promotionList.push_back(commodity.promotion);
+                promotionCounter.emplace(*commodity.promotion,1);
+                promotionList.push_front(*commodity.promotion);
                 ret.hasOneNewPromotion = true;
             }
         }
@@ -60,7 +60,7 @@ public:
             return ret;
         } 
         if (commodity.hasPromotion){
-            promotionCounter.at(commodity.promotion) -= 1;            
+            promotionCounter.at(*commodity.promotion) -= 1;            
         }
         changeStoreCondition(DELETE);
         return ret;

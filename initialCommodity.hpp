@@ -15,7 +15,7 @@ bool initialAddCommodity(Commodity* newCommodity,int addTime){
     cin >> yesOrNo;
     if (yesOrNo != "Y" && yesOrNo != "N")return false;
     bool hasPromotion = yesOrNo == string("Y") ? true : false;
-    Promotion* promotion = nullptr;
+    Promotion* promotion;
     if (hasPromotion) {
         cout << "type in Promotion kind: percentage(P) or quantity(Q):" << endl;
         string type;
@@ -27,7 +27,7 @@ bool initialAddCommodity(Commodity* newCommodity,int addTime){
         cin >> requirement >> rate;
         promotion = new Promotion(type, requirement, rate);
     }
-    *newCommodity = Commodity(storeName, wareName, addTime, hasPromotion, *promotion);
+    *newCommodity = Commodity(storeName, wareName, addTime, promotion);
     return true;
 }
 #endif

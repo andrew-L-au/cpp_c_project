@@ -17,13 +17,30 @@ public:
             return nullptr;
         } 
     }
-    bool updateStore(CommodityCollection store){
-        if (store.hasPromotion()){
-
+    bool addStoreWithPromotion(CommodityCollection* store, Promotion promotion){
+        if (promotionToStoreMapper.contains(promotion)){
+            promotionToStoreMapper.at(promotion).push_back(store);
+        }else{
+            list<CommodityCollection*> l;
+            l.push_back(store);
+            promotionToStoreMapper.emplace(promotion,l);
+            promotions.push_front(promotion);
         }
+        return true;
     }
 
-    bool addStore(CommodityCollection store){
+    bool updatePromotionOfStore(Promotion promotion, CommodityCollection* store){
+        list<CommodityCollection*>* l1 = &promotionToStoreMapper.at(promotion);
+        bool isDelete = false;
+        for (auto c : *l1){
+            if (*c == *store){
+                isDelete = true;
+            }
+        }
+        if ()
+    }
+
+    bool addStore(CommodityCollection* store){
 
     }
 

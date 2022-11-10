@@ -10,12 +10,12 @@ public:
     string sellerName;
     int addTime;
     bool hasPromotion;
-    Promotion promotion;
-    Commodity(string sellerName, string merchandiseName, int addTime, bool hasPromotion, Promotion promotion){
+    Promotion* promotion;
+    Commodity(string sellerName, string merchandiseName, int addTime, Promotion* promotion){
         this->addTime = addTime;
         this->merchandiseName = merchandiseName;
         this->sellerName = sellerName;
-        this->hasPromotion = hasPromotion;
+        this->hasPromotion = promotion == nullptr ? false : true;
         this->promotion = promotion;
     }
     Commodity(){}
@@ -24,7 +24,7 @@ public:
         (this->sellerName == commodity.sellerName) &&
         (this->addTime == commodity.addTime) &&
         (this->hasPromotion == commodity.hasPromotion) &&
-        (this->promotion == commodity.promotion);
+        (*(this->promotion) == *(commodity.promotion));
     }
 };
 #endif

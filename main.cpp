@@ -4,9 +4,10 @@
 #include"CommodityCollection.hpp"
 #include"Commodity.hpp"
 #include"initialCommodity.hpp"
+#include"PromotionSet.hpp"
 using namespace std;
-list<CommodityCollection> storeList;
-
+list<CommodityCollection*> storeList;
+PromotionSet promotionSet;
 bool inputIsFirst(string output,string first){
     string input;
     cout << output << endl;
@@ -25,21 +26,26 @@ int main(){
             Commodity commodity;
             initialAddCommodity(&commodity, time);
             bool isNewStore = true;
-            CommodityCollection oldStore;
+            CommodityCollection* oldStore;
             for (auto i : storeList){
-                if (i.storeName == commodity.sellerName){
+                if (i->storeName == commodity.sellerName){
                     isNewStore = false;
                     oldStore = i;
                 }
             }
             if (isNewStore){
-                CommodityCollection newStore(commodity.sellerName);
-                newStore.addCommodity(commodity);
+                CommodityCollection* newStore = new CommodityCollection(commodity.sellerName);
+                newStore->addCommodity(commodity);
                 storeList.push_front(newStore);
+                if (commodity.hasPromotion){
+                    promotionSet.addStoreWithPromotion(storeList.front(), *commodity.promotion);
+                }
             }else {
                 storeList.remove(oldStore);
-                oldStore.addCommodity(commodity);
+                storeList.remove(oldStore);
+                oldStore->addCommodity(commodity);
                 storeList.push_front(oldStore);
+                promotionSet.updatePromotionOfStore(, oldStore);
             }
         }else{
 
