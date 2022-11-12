@@ -45,7 +45,7 @@ int main(){
                 storeList.remove(oldStore);
                 oldStore->addCommodity(commodity);
                 storeList.push_front(oldStore);
-                promotionSet.updatePromotionOfStore(, oldStore);
+                promotionSet.updatePromotionOfStore(*commodity.promotion, oldStore);
             }
         }else{
 
