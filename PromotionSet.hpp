@@ -4,6 +4,7 @@
 #include"CommodityCollection.hpp"
 #include<list>
 #include<unordered_map>
+#include"ListUtils.hpp"
 using namespace std;
 class PromotionSet{
 private:
@@ -31,13 +32,25 @@ public:
 
     bool updatePromotionOfStore(Promotion promotion, CommodityCollection* store){
         list<CommodityCollection*>* l1 = &promotionToStoreMapper.at(promotion);
-        bool isDelete = false;
-        for (auto c : *l1){
-            if (*c == *store){
-                isDelete = true;
+        bool promotionListContainStore = listContain<CommodityCollection*>(*l1, store);
+        if (promotionListContainStore){
+            list<Promotion> storePromotions = store->promotionList;
+            bool containPromotion = listContain<Promotion>(store->promotionList, promotion);
+            if (!containPromotion){
+                l1->remove(store);
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            bool storeContainPromotion = listContain<Promotion>(store->promotionList, promotion);
+            if (storeContainPromotion){
+                l1->push_back(store);
+                return true;
+            }else {
+                return false;
             }
         }
-        if ()
     }
 
     bool addStore(CommodityCollection* store){
