@@ -1,5 +1,5 @@
-#ifndef INITIAL_COMMODITY
-#define INITIAL_COMMODITY
+#ifndef INITIAL_ADD_COMMODITY
+#define INITIAL_ADD_COMMODITY
 #include<iostream>
 #include<string>
 #include"Commodity.hpp"

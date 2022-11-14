@@ -53,12 +53,8 @@ public:
         }
     }
 
-    bool addStore(CommodityCollection* store){
-
-    }
-
-    bool deleteStore(CommodityCollection store){
-
+    bool deleteStore(CommodityCollection* store){
+        return false;
     }
 };
 #endif

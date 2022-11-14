@@ -7,6 +7,15 @@
 using namespace std;
 string DELETE = "delete";
 string ADD = "add";
+
+template <>
+struct hash<Commodity>{
+    size_t operator()(const Commodity& c) const{
+        return ((hash<string>()(c.sellerName)
+            ^ (hash<string>()(c.merchandiseName) << 1)) >> 1);
+    }
+};
+
 class ChangeCondition{
 public:
     bool hasOneNewPromotion;
@@ -27,6 +36,7 @@ public:
 class CommodityCollection{
 private:
     unordered_map<Promotion,int,hash<Promotion>> promotionCounter;
+    unordered_map<Commodity,int,hash<Commodity>> commodityCounter;
     StoreCondition storeCondition;
 public:
     list<Commodity> commodityList;
@@ -38,6 +48,10 @@ public:
     }
     CommodityCollection(){}
     ChangeCondition addCommodity(Commodity commodity){
+        if (commodityCounter.contains(commodity)){
+            commodityCounter.at(commodity)++;
+            return ChangeCondition(false,false);
+        }
         ChangeCondition ret(false,false); 
         if (commodity.hasPromotion){
             if (promotionCounter.contains(*commodity.promotion)){
@@ -49,19 +63,33 @@ public:
             }
         }
         commodityList.push_front(commodity);
+        commodityCounter.emplace(commodity,1);
         changeStoreCondition(ADD);
         return ret;
     }
-    ChangeCondition deleteCommodity(Commodity commodity){
-        ChangeCondition ret(false,false);
-        int pre = commodityList.size();
-        commodityList.remove(commodity);
-        if (pre == commodityList.size()){
-            return ret;
-        } 
-        if (commodity.hasPromotion){
-            promotionCounter.at(*commodity.promotion) -= 1;            
+    Commodity getCommodity(string name){
+        for (Commodity c : commodityList){
+            if (c.sellerName == name){
+                return c;
+            }
         }
+        return Commodity();
+    }
+    ChangeCondition deleteCommodity(Commodity commodity){
+        if (commodityCounter.contains(commodity) && commodityCounter.at(commodity) >= 2){
+            commodityCounter.at(commodity)--;
+            return ChangeCondition(false,false);
+        }
+        ChangeCondition ret(false,false);
+        commodityList.remove(commodity);
+        if (commodity.hasPromotion){
+            promotionCounter.at(*commodity.promotion) -= 1;
+            if (promotionCounter.at(*commodity.promotion) == 0){
+                promotionCounter.erase(*commodity.promotion);
+                promotionList.remove(*commodity.promotion);
+            }          
+        }
+        commodityCounter.erase(commodity);
         changeStoreCondition(DELETE);
         return ret;
     }
@@ -93,4 +121,5 @@ namespace std{
         }
     };
 }
+
 #endif
